@@ -490,9 +490,9 @@ cv::Mat CameraInput::GetImageFromBuffer()
   cv::Mat mat = ConvertImageToMat( rgbImage );
 
   cv::transpose( mat, mat );
-  cv::flip( mat, mat, 0 );
+  //cv::flip( mat, mat, 0 );
   cv::transpose( mat, mat );
-  cv::flip( mat, mat, 0 );
+  //cv::flip( mat, mat, 0 );
   return mat;
 }
 

@@ -565,7 +565,7 @@ void MainWindow::Analyze()
       }
     }
   PointCloud temp = { hires.points, hires.colors.clone() };
-  save_pointcloud_plane_intersection(temp.points, temp.colors, normal_blue, normal_green, normal_red, A_blue, A_green, A_red, intersection_circle, 0.15f, "pointcloud_BGR_plane_circles");
+  save_pointcloud_plane_intersection(temp.points, temp.colors, normal_blue, normal_green, normal_red, A_blue, A_green, A_red, intersection_circle, 0.075f, "pointcloud_BGR_plane_circles");
 
 
   ProjectPointCloud( temp );
@@ -1293,6 +1293,9 @@ void MainWindow::save_pointcloud_plane_intersection( cv::Mat pointcloud, cv::Mat
 {
   // Display the 3 planes and the intersection point
   float dist_B, dist_G, dist_R, dist_intersection;
+
+  int maxcol = 2000;
+  int nred = 0, nblue = 0, ngreen = 0;
   for( int row = 0; row < pointcloud.rows; row++ )
     {
     for( int col = 0; col < pointcloud.cols; col++ )
@@ -1312,17 +1315,20 @@ void MainWindow::save_pointcloud_plane_intersection( cv::Mat pointcloud, cv::Mat
           {
           pointcloud_colors.at<cv::Vec3b>( row, col ) = cv::Vec3f( 0, 255, 255 );
           }
-        else if( dist_B < size_circles )
+        else if( dist_B < size_circles  && nblue < maxcol)
           {
           pointcloud_colors.at<cv::Vec3b>( row, col ) = cv::Vec3f( 255, 0, 0 );
+		  nblue++;
           }
-        else if( dist_G < size_circles )
+        else if( dist_G < size_circles && ngreen < maxcol)
           {
           pointcloud_colors.at<cv::Vec3b>( row, col ) = cv::Vec3f( 0, 255, 0 );
+		  ngreen++;
           }
-        else if( dist_R < size_circles )
+        else if( dist_R < size_circles && nred < maxcol)
           {
           pointcloud_colors.at<cv::Vec3b>( row, col ) = cv::Vec3f( 0, 0, 255 );
+		  nred++;
           }
         else
           {
